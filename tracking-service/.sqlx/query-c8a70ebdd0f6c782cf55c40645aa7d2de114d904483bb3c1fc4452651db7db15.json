@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE detailer_profiles\n            SET \n                last_known_latitude = $1,\n                last_known_longitude = $2,\n                updated_at = NOW()\n            WHERE user_id = $3\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Float8",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "c8a70ebdd0f6c782cf55c40645aa7d2de114d904483bb3c1fc4452651db7db15"
+}

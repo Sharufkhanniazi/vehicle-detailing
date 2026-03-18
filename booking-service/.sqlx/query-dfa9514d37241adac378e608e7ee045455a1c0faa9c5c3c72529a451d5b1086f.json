@@ -1,0 +1,29 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                INSERT INTO order_services (\n                    order_id,\n                    service,\n                    base_price,\n                    final_price\n                )\n                VALUES ($1,$2::service_type,$3,$4)\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        {
+          "Custom": {
+            "name": "service_type",
+            "kind": {
+              "Enum": [
+                "ExteriorWash",
+                "InteriorClean",
+                "FullDetailing",
+                "EngineBayCleaning"
+              ]
+            }
+          }
+        },
+        "Numeric",
+        "Numeric"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "dfa9514d37241adac378e608e7ee045455a1c0faa9c5c3c72529a451d5b1086f"
+}

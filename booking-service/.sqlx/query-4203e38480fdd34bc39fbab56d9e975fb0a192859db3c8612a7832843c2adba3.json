@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE detailer_profiles\n            SET \n                availability_status = 'ONLINE',\n                total_jobs_completed = total_jobs_completed + 1,\n                updated_at = NOW()\n            WHERE user_id = $1\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "4203e38480fdd34bc39fbab56d9e975fb0a192859db3c8612a7832843c2adba3"
+}

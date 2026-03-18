@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE customer_profiles\n            SET\n                loyalty_points = loyalty_points + 1,\n                updated_at = NOW()\n            WHERE user_id = $1\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "c71327ff2200d077c35185895ed6a98c0982016f6c81fa726ec9a1fdddaeb02f"
+}

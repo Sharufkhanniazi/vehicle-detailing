@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE orders\n            SET \n                status = 'CANCELLED',\n                updated_at = NOW()\n            WHERE id = $1\n            AND (customer_id = $2 OR detailer_id = $2)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "092834fd89d3bff2dee39a4eb20c3b853ff28909483b1232706e6eeb4207b1c9"
+}

@@ -1,0 +1,47 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT \n                o.id,\n                o.customer_id,\n                o.detailer_id,\n                o.latitude as customer_lat,\n                o.longitude as customer_lng\n            FROM orders o \n            WHERE o.id = $1\n                AND (o.customer_id = $2 OR o.detailer_id = $2)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "customer_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "detailer_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "customer_lat",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 4,
+        "name": "customer_lng",
+        "type_info": "Float8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "4e312f0408c2f7272cd173e816489467262087beb3bffc2fbf9cd2ac1b51f76c"
+}

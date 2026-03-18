@@ -1,0 +1,128 @@
+services:
+  # 1. Pricing service (gRPC server)
+  pricing-service:
+    build:
+      context: .
+      dockerfile: pricing-service/Dockerfile
+    ports:
+      - "50051:50051"  # gRPC port
+    networks:
+      - app-network
+
+  # 2. Auth service (HTTP API + Kafka producer)
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth-service/Dockerfile
+    ports:
+      - "3000:3000"  # HTTP API
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - pricing-service
+
+  # 3. Booking service (HTTP API + gRPC client + Kafka consumer)
+  booking-service:
+    build:
+      context: .
+      dockerfile: booking-service/Dockerfile
+    ports:
+      - "3001:3000"  # HTTP API
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - REDIS_URL=${REDIS_URL}
+      - PORT=3000
+      - PRICING_SERVICE_URL=http://pricing-service:50051
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - pricing-service
+      - auth-service
+
+  # 4. Assign detailer service (background worker)
+  assign-detailer-service:
+    build:
+      context: .
+      dockerfile: assign-detailer-service/Dockerfile
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - booking-service
+
+  # 5. Email service (background worker)
+  email-service:
+    build:
+      context: .
+      dockerfile: email-service/Dockerfile
+    environment:
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - AUTH_SERVICE_URL=http://auth-service:3000
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - auth-service
+
+  # 6. Notification service (WebSocket + Kafka consumer)
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification-service/Dockerfile
+    ports:
+      - "3003:3003"  # WebSocket/HTTP API
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - FCM_PROJECT_ID=${FCM_PROJECT_ID}
+    volumes:
+      - ./notification-service/vehicle_detailing.json:/app/vehicle_detailing.json:ro
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - booking-service
+      - auth-service
+
+  # 7. Tracking service (WebSocket + HTTP + Kafka)
+  tracking-service:
+    build:
+      context: .
+      dockerfile: tracking-service/Dockerfile
+    ports:
+      - "3002:3002"  # WebSocket/HTTP API
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - KAFKA_BROKER=${KAFKA_BROKER}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    env_file:
+      - .env
+    networks:
+      - app-network
+    depends_on:
+      - booking-service
+      - notification-service
+
+networks:
+  app-network:
+    driver: bridge

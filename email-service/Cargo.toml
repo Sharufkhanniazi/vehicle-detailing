@@ -1,0 +1,18 @@
+[package]
+name = "email-service"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+serde_json = "1.0.149"
+reqwest = { version = "0.11", features = ["json", "rustls-tls"] }
+rdkafka = { version = "0.36", features = ["tokio"] }
+futures = "0.3.32"
+uuid = { version = "1.21.0", features = ["v4", "serde"] }
+serde = { version = "1.0.228", features = ["derive"] }
+tracing = "0.1.44"
+tracing-subscriber = "0.3.22"
+tokio = { version = "1.49", features = ["full"] }
+dotenvy = "0.15.7"
+shared-auth = { path = "../shared-auth" }
+anyhow = "1.0.102"

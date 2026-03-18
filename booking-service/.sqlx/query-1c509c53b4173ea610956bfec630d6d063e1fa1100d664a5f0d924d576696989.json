@@ -1,0 +1,44 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT detailer_id, status as \"order_status: OrderStatus\"\n            FROM orders\n            WHERE id = $1\n            AND (customer_id = $2 OR detailer_id = $2)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "detailer_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "order_status: OrderStatus",
+        "type_info": {
+          "Custom": {
+            "name": "order_status",
+            "kind": {
+              "Enum": [
+                "PENDING",
+                "AWAITING_PAYMENT",
+                "CONFIRMED",
+                "ASSIGNED",
+                "IN_PROGRESS",
+                "COMPLETED",
+                "CANCELLED"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      true,
+      false
+    ]
+  },
+  "hash": "1c509c53b4173ea610956bfec630d6d063e1fa1100d664a5f0d924d576696989"
+}

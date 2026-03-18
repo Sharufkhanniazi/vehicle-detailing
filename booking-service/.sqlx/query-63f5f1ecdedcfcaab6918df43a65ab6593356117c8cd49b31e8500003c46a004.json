@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE orders\n            SET \n                status = 'COMPLETED',\n                updated_at = NOW()\n            WHERE id = $1 AND status = 'IN_PROGRESS'\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "63f5f1ecdedcfcaab6918df43a65ab6593356117c8cd49b31e8500003c46a004"
+}

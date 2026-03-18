@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO detailer_profiles (user_id) \n                             VALUES ($1) \n                             ON CONFLICT (user_id) DO NOTHING",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "a908f751b1b5020ecf06738937af205554828600f265c8a9536633635c61de55"
+}

@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT last_known_latitude, last_known_longitude, updated_at\n            FROM detailer_profiles\n            WHERE user_id = $1\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "last_known_latitude",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 1,
+        "name": "last_known_longitude",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "updated_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "026c404e256d979a0ae4e21d3dcbe64d8749b325bdd6b933c56852eb5fbc17ae"
+}

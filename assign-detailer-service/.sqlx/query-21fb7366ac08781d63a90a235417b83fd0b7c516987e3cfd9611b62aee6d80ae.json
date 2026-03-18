@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT id\n            FROM (\n                SELECT\n                    u.id,\n                    u.username,\n                    dp.rating,\n                    dp.total_jobs_completed,\n                    dp.availability_status as \"availability_status: AvailabilityStatus\",\n\n                    (\n                        6371 * acos(\n                            cos(radians($1)) *\n                            cos(radians(dp.last_known_latitude)) *\n                            cos(radians(dp.last_known_longitude) - radians($2)) +\n                            sin(radians($1)) *\n                            sin(radians(dp.last_known_latitude))\n                        )\n                    ) AS distance_km\n\n                FROM users u\n                JOIN detailer_profiles dp ON u.id = dp.user_id\n\n                WHERE\n                    u.role = 'DETAILER'\n                    AND u.is_active = true\n                    AND dp.availability_status = 'ONLINE'\n\n                    -- Bounding box filter (FAST)\n                    AND dp.last_known_latitude BETWEEN ($1 - 0.09) AND ($1 + 0.09)\n                    AND dp.last_known_longitude BETWEEN ($2 - 0.09) AND ($2 + 0.09)\n\n                    -- Avoid double booking\n                    AND NOT EXISTS (\n                        SELECT 1\n                        FROM orders o2\n                        WHERE o2.detailer_id = u.id\n                        AND o2.time_slot = $3\n                        AND o2.status NOT IN ('COMPLETED','CANCELLED')\n                    )\n            ) AS candidates\n\n            WHERE distance_km <= 10\n\n            ORDER BY\n                distance_km ASC,\n                rating DESC NULLS LAST,\n                total_jobs_completed DESC\n\n            LIMIT 1;\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Float8",
+        "Timestamptz"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "21fb7366ac08781d63a90a235417b83fd0b7c516987e3cfd9611b62aee6d80ae"
+}
