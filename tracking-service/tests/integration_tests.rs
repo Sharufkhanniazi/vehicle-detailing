@@ -95,7 +95,11 @@ async fn test_broadcast_to_order() {
     let received = rx.recv().await.unwrap();
 
     match received {
-        axum::extract::ws::Message::Text(_) => assert!(true),
+        axum::extract::ws::Message::Text(text) => {
+            let msg: serde_json::Value = serde_json::from_str(&text).unwrap();
+            assert_eq!(msg["latitude"], 1.0);
+            assert_eq!(msg["longitude"], 2.0);
+        }
         _ => panic!("Expected text message"),
     }
 }
