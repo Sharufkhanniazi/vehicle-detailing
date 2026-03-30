@@ -968,12 +968,12 @@ vehicle-detailing-platform/
 ```
 ---
 
-## Testing
+## 🧪 Testing
 
 The project implements a multi-layered testing strategy across all microservices, including unit tests, integration tests, and test database migrations.
 
 ### Test Structure
-
+```
 Each service follows a consistent test organization:
 service-name/
 ├── tests/
@@ -983,6 +983,7 @@ service-name/
 │ └── test_db.rs # Test database setup & teardown
 └── migrations/
 └── *_test_db.sql # Service-specific test migrations
+```
 
 ### Test Coverage by Service
 
@@ -1003,11 +1004,11 @@ service-name/
 cargo test --workspace
 ```
 
-## Rate Limiting
+## 🚦 Rate Limiting
 
 The platform implements distributed rate limiting across most microservices to prevent abuse, ensure fair usage, and protect system resources. Rate limiting is handled at the middleware level using Redis for distributed state management
 
-## Prometheus Metrics
+## 📊 Prometheus Metrics
 
 The platform integrates Prometheus for comprehensive observability, monitoring, and alerting across all microservices. Metrics are collected at the middleware level and exposed via a dedicated metrics endpoint.
 
