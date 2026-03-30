@@ -810,98 +810,204 @@ distance = R * c  (R = 6371km, Earth's radius)
 ```
 vehicle-detailing-platform/
 ├── Cargo.toml                    # Workspace definition
+├── Cargo.lock                    # Locked dependencies
 ├── docker-compose.yml             # Docker composition
 ├── .env.example                   # Environment template
-├── migrations/                    # Database migrations
+├── migrations/                    # Root database migrations
 │   └── 20260227164156_create_tables.sql
 ├── proto/                         # Protocol Buffers
 │   └── pricing.proto
-├── shared-auth/                   # Shared library
+├── shared-auth/                   # Shared authentication library
 │   ├── Cargo.toml
+│   ├── Dockerfile
 │   └── src/
 │       ├── lib.rs
 │       ├── jwt.rs
 │       └── models.rs
 ├── auth-service/                  # Authentication service
 │   ├── Cargo.toml
-│   └── src/
-│       ├── main.rs
-│       ├── handlers/
-│       ├── models.rs
-│       ├── services/
-│       └── utils/
+│   ├── Dockerfile
+│   ├── migrations/
+│   │   └── 20260320004214_test_db.sql
+│   ├── src/
+│   │   ├── main.rs
+│   │   ├── lib.rs
+│   │   ├── handlers/
+│   │   │   ├── mod.rs
+│   │   │   └── auth.rs
+│   │   ├── services/
+│   │   │   ├── mod.rs
+│   │   │   ├── auth.rs
+│   │   │   ├── kafka_producer.rs
+│   │   │   └── metrics.rs
+│   │   ├── utils/
+│   │   │   ├── mod.rs
+│   │   │   ├── error.rs
+│   │   │   └── jwt.rs
+│   │   └── models.rs
+│   └── tests/
+│       ├── integration_tests.rs
+│       └── common/
+│           ├── mod.rs
+│           └── test_db.rs
 ├── booking-service/               # Booking management
 │   ├── Cargo.toml
 │   ├── build.rs
-│   └── src/
-│       ├── main.rs
-│       ├── handlers/
-│       ├── models.rs
-│       ├── services/
-│       ├── state.rs
-│       └── utils/
+│   ├── Dockerfile
+│   ├── migrations/
+│   │   └── 20260320035210_test_db.sql
+│   ├── src/
+│   │   ├── main.rs
+│   │   ├── lib.rs
+│   │   ├── state.rs
+│   │   ├── handlers/
+│   │   │   ├── mod.rs
+│   │   │   └── booking.rs
+│   │   ├── services/
+│   │   │   ├── mod.rs
+│   │   │   ├── booking.rs
+│   │   │   ├── consumer.rs
+│   │   │   ├── kafka_producer.rs
+│   │   │   └── metrics.rs
+│   │   ├── middleware/
+│   │   │   ├── mod.rs
+│   │   │   ├── auth_user.rs
+│   │   │   └── rate_limiting.rs
+│   │   ├── utils/
+│   │   │   ├── mod.rs
+│   │   │   ├── error.rs
+│   │   │   └── models.rs
+│   │   └── proto/
+│   │       └── mod.rs
+│   └── tests/
+│       ├── integration_tests.rs
+│       └── common/
+│           ├── mod.rs
+│           └── test_db.rs
 ├── pricing-service/               # Price calculation
 │   ├── Cargo.toml
 │   ├── build.rs
-│   └── src/main.rs
+│   ├── Dockerfile
+│   ├── src/
+│   │   ├── main.rs
+│   │   └── lib.rs
+│   └── tests/
+│       └── integration_tests.rs
 ├── tracking-service/              # Real-time tracking
 │   ├── Cargo.toml
-│   └── src/
-│       ├── main.rs
-│       ├── handlers/
-│       ├── services/
-│       ├── state.rs
-│       └── utils/
+│   ├── Dockerfile
+│   ├── migrations/
+│   │   └── 20260330100554_test_db.sql
+│   ├── src/
+│   │   ├── main.rs
+│   │   ├── lib.rs
+│   │   ├── state.rs
+│   │   ├── handlers/
+│   │   │   ├── mod.rs
+│   │   │   └── tracking.rs
+│   │   ├── services/
+│   │   │   ├── mod.rs
+│   │   │   ├── tracking.rs
+│   │   │   ├── consumer.rs
+│   │   │   ├── kafka_producer.rs
+│   │   │   └── metrics.rs
+│   │   ├── middleware/
+│   │   │   ├── mod.rs
+│   │   │   ├── auth_user.rs
+│   │   │   └── rate_limiting.rs
+│   │   └── utils/
+│   │       ├── mod.rs
+│   │       ├── errors.rs
+│   │       └── models.rs
+│   └── tests/
+│       ├── integration_tests.rs
+│       └── common/
+│           ├── mod.rs
+│           └── test_db.rs
 ├── notification-service/          # Multi-channel notifications
 │   ├── Cargo.toml
-│   └── src/
-│       ├── main.rs
-│       ├── consumer.rs
-│       ├── handler.rs
-│       ├── services.rs
-│       ├── state.rs
-│       └── utils/
+│   ├── Dockerfile
+│   ├── src/
+│   │   ├── main.rs
+│   │   ├── consumer.rs
+│   │   ├── handler.rs
+│   │   ├── services.rs
+│   │   ├── state.rs
+│   │   ├── errors.rs
+│   │   ├── util.rs
+│   │   ├── middleware/
+│   │   │   ├── mod.rs
+│   │   │   ├── auth_user.rs
+│   │   │   └── rate_limiting.rs
+│   │   └── vehicle_detailing.json
+│   └── vehicle_detailing.json
 ├── email-service/                  # Email communications
 │   ├── Cargo.toml
+│   ├── Dockerfile
 │   └── src/
 │       ├── main.rs
 │       ├── consumer.rs
 │       └── mailer.rs
 └── assign-detailer-service/        # Detailer matching
     ├── Cargo.toml
-    └── src/
-        ├── main.rs
-        ├── assign_detailer.rs
-        ├── consumer.rs
-        ├── errors.rs
-        └── kafka_producer.rs
-```
-
+    ├── Dockerfile
+    ├── migrations/
+    │   └── 20260319044050_test_db.sql
+    ├── src/
+    │   ├── main.rs
+    │   ├── lib.rs
+    │   ├── assign_detailer.rs
+    │   ├── consumer.rs
+    │   ├── errors.rs
+    │   └── kafka_producer.rs
+    └── tests/
+        ├── integration_tests.rs
+        └── common/
+            ├── mod.rs
+            └── test_db.rs
 ---
 
-## 🚧 Future Improvements
+## Testing
 
-### Short Term
-- [ ] API Gateway with rate limiting
-- [ ] Distributed tracing (OpenTelemetry)
-- [ ] Health checks and readiness probes
-- [ ] Prometheus metrics
-- [ ] Structured logging with JSON
+The project implements a multi-layered testing strategy across all microservices, including unit tests, integration tests, and test database migrations.
 
-### Medium Term
-- [ ] Kubernetes deployment manifests
-- [ ] Service mesh integration (Istio)
-- [ ] Database read replicas
-- [ ] Circuit breakers and retry policies
-- [ ] Saga orchestration for distributed transactions
+### Test Structure
 
-### Long Term
-- [ ] Machine learning for demand prediction
-- [ ] Dynamic pricing algorithms
-- [ ] Route optimization for detailers
-- [ ] Mobile SDK for tracking integration
-- [ ] Multi-region deployment
-- [ ] GraphQL federation
+Each service follows a consistent test organization:
+service-name/
+├── tests/
+│ ├── integration_tests.rs # Integration test suite
+│ └── common/ # Shared test utilities
+│ ├── mod.rs # Common module exports
+│ └── test_db.rs # Test database setup & teardown
+└── migrations/
+└── *_test_db.sql # Service-specific test migrations
+
+### Test Coverage by Service
+
+| Service | Integration Tests | Test DB Migrations | Common Utils |
+|---------|:----------------:|:------------------:|:------------:|
+| Auth Service | ✓ | ✓ (20260320004214_test_db.sql) | ✓ |
+| Booking Service | ✓ | ✓ (20260320035210_test_db.sql) | ✓ |
+| Pricing Service | ✓ | - | - |
+| Tracking Service | ✓ | ✓ (20260330100554_test_db.sql) | ✓ |
+| Assign Detailer Service | ✓ | ✓ (20260319044050_test_db.sql) | ✓ |
+| Notification Service | - | - | - |
+| Email Service | - | - | - |
+
+### Running Tests
+
+#### Run all tests across workspace:
+```bash
+cargo test --workspace
+
+## Rate Limiting
+
+The platform implements distributed rate limiting across most microservices to prevent abuse, ensure fair usage, and protect system resources. Rate limiting is handled at the middleware level using Redis for distributed state management
+
+## Prometheus Metrics
+
+The platform integrates Prometheus for comprehensive observability, monitoring, and alerting across all microservices. Metrics are collected at the middleware level and exposed via a dedicated metrics endpoint.
 
 ---
 
