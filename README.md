@@ -965,6 +965,7 @@ vehicle-detailing-platform/
         └── common/
             ├── mod.rs
             └── test_db.rs
+```
 ---
 
 ## Testing
@@ -1000,6 +1001,7 @@ service-name/
 #### Run all tests across workspace:
 ```bash
 cargo test --workspace
+```
 
 ## Rate Limiting
 
