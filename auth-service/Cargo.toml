@@ -26,3 +26,4 @@ shared-auth = { path = "../shared-auth" }
 anyhow = "1.0.102"
 prometheus = "0.14.0"
 lazy_static = "1.5.0"
+url = "2.5.8"

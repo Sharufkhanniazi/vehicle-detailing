@@ -5,14 +5,6 @@ use chrono::{DateTime, Utc};
 use crate::kafka_producer::KafkaProducer;
 use crate::errors::Result;
 
-// #[derive(Debug, Clone, Copy, Serialize, Deserialize, Type)]
-// #[sqlx(type_name = "availability_status", rename_all = "UPPERCASE")]
-// pub enum AvailabilityStatus {
-//     Online, 
-//     Offline, 
-//     Busy
-// }
-// 
 pub struct DetailerAssignmentService {
     pub pool: PgPool,
     pub kafka: KafkaProducer,
@@ -55,11 +47,9 @@ impl DetailerAssignmentService {
             FROM (
                 SELECT
                     u.id,
-                    u.username,
                     dp.rating,
                     dp.total_jobs_completed,
                     dp.availability_status as "availability_status: AvailabilityStatus",
-
                     (
                         6371 * acos(
                             cos(radians($1)) *
@@ -69,20 +59,14 @@ impl DetailerAssignmentService {
                             sin(radians(dp.last_known_latitude))
                         )
                     ) AS distance_km
-
                 FROM users u
                 JOIN detailer_profiles dp ON u.id = dp.user_id
-
                 WHERE
                     u.role = 'DETAILER'
                     AND u.is_active = true
                     AND dp.availability_status = 'ONLINE'
-
-                    -- Bounding box filter (FAST)
                     AND dp.last_known_latitude BETWEEN ($1 - 0.09) AND ($1 + 0.09)
                     AND dp.last_known_longitude BETWEEN ($2 - 0.09) AND ($2 + 0.09)
-
-                    -- Avoid double booking
                     AND NOT EXISTS (
                         SELECT 1
                         FROM orders o2
@@ -91,14 +75,10 @@ impl DetailerAssignmentService {
                         AND o2.status NOT IN ('COMPLETED','CANCELLED')
                     )
             ) AS candidates
-
             WHERE distance_km <= 10
-
-            ORDER BY
-                distance_km ASC,
-                rating DESC NULLS LAST,
-                total_jobs_completed DESC
-
+            ORDER BY distance_km ASC,
+                     rating DESC NULLS LAST,
+                     total_jobs_completed DESC
             LIMIT 1;
             "#,
             latitude,   // $1

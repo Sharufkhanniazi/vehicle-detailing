@@ -28,6 +28,7 @@ anyhow = "1.0.102"
 redis = { version = "1.0.3", features = ["aio", "connection-manager", "tokio-comp"] }
 prometheus = "0.14.0"
 lazy_static = "1.5.0"
+url = "2.5.8"
 
 [build-dependencies]
 tonic-build = "0.11"    

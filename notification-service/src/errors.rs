@@ -18,7 +18,6 @@ pub enum AppError {
     InternalServerError(String),
 }
 
-
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let (status, error_message) = match &self {
