@@ -1,10 +1,10 @@
-# 🚗 Vehicle Detailing Microservices Platform
+# Vehicle Detailing Microservices Platform
 
 A comprehensive **Rust-based microservices backend** for an on-demand **vehicle detailing service** (Uber-style service booking platform). The system supports user authentication, booking management, pricing estimates, real-time tracking, event-driven communication, and multi-channel notifications.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Architecture Overview](#-architecture-overview)
 - [Services](#-services)
@@ -31,7 +31,7 @@ A comprehensive **Rust-based microservices backend** for an on-demand **vehicle 
 
 ---
 
-## 🏗 Architecture Overview
+## Architecture Overview
 
 This project implements a **microservices architecture** where each service handles a specific business capability, communicating through **asynchronous events** and **synchronous gRPC/HTTP** calls.
 
@@ -81,7 +81,7 @@ This project implements a **microservices architecture** where each service hand
 
 ---
 
-## 📦 Services
+## Services
 
 ### 1️⃣ Auth Service
 
@@ -418,7 +418,7 @@ notifications (id, user_id, title, body)
 
 ---
 
-## 🔐 Authentication
+## Authentication
 
 All protected endpoints require a **JWT Bearer Token**.
 
@@ -485,7 +485,7 @@ REDIS_URL=redis://redis:6379
 
 ---
 
-## 🐳 Docker Setup
+## Docker Setup
 
 The project includes comprehensive Docker configuration for all services.
 
@@ -559,7 +559,7 @@ assign-detailer-service: postgres, kafka
 
 ---
 
-## 🚀 Running the Project
+## Running the Project
 
 ### Prerequisites
 
@@ -620,7 +620,7 @@ curl -X POST http://localhost:3000/health
 
 ---
 
-## 📊 API Documentation
+## API Documentation
 
 ### Auth Service Examples
 
@@ -705,7 +705,7 @@ ws.onmessage = (event) => {
 
 ---
 
-## 🔄 Real-time Features
+## Real-time Features
 
 ### WebSocket Connections
 
@@ -741,7 +741,7 @@ distance = R * c  (R = 6371km, Earth's radius)
 
 ---
 
-## 📈 Scalability
+## Scalability
 
 ### Horizontal Scaling
 
@@ -774,7 +774,7 @@ distance = R * c  (R = 6371km, Earth's radius)
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Core Technologies
 
@@ -805,7 +805,7 @@ distance = R * c  (R = 6371km, Earth's radius)
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 vehicle-detailing-platform/
@@ -968,7 +968,7 @@ vehicle-detailing-platform/
 ```
 ---
 
-## 🧪 Testing
+## Testing
 
 The project implements a multi-layered testing strategy across all microservices, including unit tests, integration tests, and test database migrations.
 
@@ -1004,17 +1004,17 @@ service-name/
 cargo test --workspace
 ```
 
-## 🚦 Rate Limiting
+## Rate Limiting
 
 The platform implements distributed rate limiting across most microservices to prevent abuse, ensure fair usage, and protect system resources. Rate limiting is handled at the middleware level using Redis for distributed state management
 
-## 📊 Prometheus Metrics
+## Prometheus Metrics
 
 The platform integrates Prometheus for comprehensive observability, monitoring, and alerting across all microservices. Metrics are collected at the middleware level and exposed via a dedicated metrics endpoint.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Developed as a production-grade **microservices backend** for a real-time vehicle detailing platform, demonstrating advanced Rust backend engineering concepts including:
 
