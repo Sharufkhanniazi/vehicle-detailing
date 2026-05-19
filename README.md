@@ -347,7 +347,7 @@ DetailerArrivedEvent
 
 ---
 
-## 📡 Event-Driven Communication
+## Event-Driven Communication
 
 Services communicate asynchronously through **Apache Kafka** topics.
 
@@ -388,7 +388,7 @@ Services communicate asynchronously through **Apache Kafka** topics.
 
 ---
 
-## 🗄 Database Schema
+## Database Schema
 
 ### PostgreSQL Tables
 
@@ -1028,7 +1028,7 @@ Developed as a production-grade **microservices backend** for a real-time vehicl
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Axum](https://github.com/tokio-rs/axum) - Web framework
 - [SQLx](https://github.com/launchbadge/sqlx) - Async SQL toolkit
